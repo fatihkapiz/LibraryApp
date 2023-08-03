@@ -1,12 +1,9 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// import App from './App';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./Login.js";
-import Login from './Login.js';
-import AuthorList from './AuthorList';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

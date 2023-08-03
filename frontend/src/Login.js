@@ -1,8 +1,6 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import * as React from "react";
 import axios from "axios";
-import { LoginContext } from "./Contexts/LoginContext";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -18,9 +16,11 @@ export default function Login() {
             password
         })
         .then(response => {
-          _token = response.data._token;
           console.log(response);
-          useNavigate("/");
+          _token = response.data.token;
+          localStorage.setItem("token", _token);
+          console.log(localStorage);
+          console.log(_token);
         })
         .catch(error => {
           console.log(error);
