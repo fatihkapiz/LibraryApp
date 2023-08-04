@@ -1,10 +1,13 @@
 import { useState } from "react";
 import * as React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
 
     let _token;
 
@@ -19,10 +22,12 @@ export default function Login() {
           console.log(response);
           _token = response.data.token;
           localStorage.setItem("token", _token);
+          navigate("/");
           console.log(localStorage);
           console.log(_token);
         })
         .catch(error => {
+          setError(true);
           console.log(error);
         });
     }
@@ -50,6 +55,7 @@ export default function Login() {
               />
             </div>
             <button type="submit">submit</button>
+            {error && <div>Incorrect username or password</div>}
             {/* <input type = "submit"/> */}
           </form>
         </ div>
