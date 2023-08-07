@@ -1,44 +1,48 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAuthors } from "../Services/AuthorService"
+import { config } from "../Services/AuthInfo";
 
 export default function AuthorList() {
 
   const [authorList, setList] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  let authors = [];
+  let token = localStorage.getItem("token");
+  // let authors = [];
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("useEffect in authors working.");
-    setToken(localStorage.getItem("token"));
+    handler();
     if (token == null) {
       alert("You must login before using this interface.");
       navigate("/login");
     }
-    console.log(token);
   }, [])
+
+  const handler = async() => {
+    try {
+      const data = await getAuthors();
+      setList(data);
+      console.log(data);
+    }
+    catch(error) {
+      console.log(error);
+    }
+  }
 
   const logout = () => {
     localStorage.clear();
     navigate("/");
   }
 
-  const config = {
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  }
-
-  function getAuthors(e) {
-    axios.get("http://localhost:5025/Author/list", config)
+  function get() {
+    axios.get("http://localhost:5025/Author/list", config())
     .then(response => {
-      authors = response.data;
-      console.log(response);
-      setList(authors);
-      console.log(authorList);
+      setList(response.data);
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      console.log(error); 
+    });
   }
 
   return (
